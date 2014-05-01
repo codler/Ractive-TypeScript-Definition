@@ -2,18 +2,27 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-
-// Version: 0.4.0-1
-// License: MIT License
+// Version: 0.4.0-2+2014-05-01
 
 // It's functionally identical to the ES6 promise (as currently spec'd) except that Promise.race and Promise.cast are not currently implemented.
-// TODO: Implement interface or wait until typescript include native Promise definition.
-interface RactivePromise {
-	();
+interface RactivePromise extends Object {
+	// TODO: Implement interface or wait until typescript include native Promise definition.
 }
 
-interface RactiveObserve {
-	cancel(): void; // TODO void?
+interface RactiveComponentPlugin extends RactiveStatic {
+	// TODO: 
+}
+
+interface RactiveDecoratorPlugin extends Function {
+	// TODO: 
+}
+
+interface RactiveEventPlugin extends Function {
+	// TODO: 
+}
+
+interface RactiveTransitionPlugin {
+	(t: RactiveTransition, params: Object);
 }
 
 interface RactiveEvent {
@@ -23,6 +32,39 @@ interface RactiveEvent {
 	keypath: string;
 	node: Node;
 	original: Event;
+}
+
+// Return value in ractive.observe and ractive.on
+interface RactiveObserve {
+	cancel(): void;
+}
+
+// Comes as first parameter in RactiveTransitionPlugin
+interface RactiveTransition {
+	isIntro: boolean;
+	name: string;
+	node: Node;
+
+	animateStyle(prop: string, value: any, options: RactiveTransitionAnimateOptions, complete: Function): void;
+	animateStyle(props: Object, options: RactiveTransitionAnimateOptions, complete: Function): void;
+	// Default false
+	complete(noReset?: boolean): void;
+	getStyle(prop: string): string;
+	getStyle(props: string[]): Object;
+	processParams(params: any, defaults?: Object): Object;
+	resetStyle(): void;
+	setStyle(prop: string, value: any): RactiveTransition;
+	setStyle(props: Object): RactiveTransition;
+}
+
+interface RactiveTransitionAnimateOptions {
+	// TODO: Do it have default value?
+	duration: number;
+	// Any valid CSS timing function
+	// Default 'linear'
+	easing?: string;
+	// TODO: Do it have default value?
+	delay: number;
 }
 
 interface RactiveAnimateOptions {
@@ -46,38 +88,77 @@ interface RactiveObserveOptions {
 	init?: boolean;
 }
 
-// TODO: document default options
+// Used in Initialisation options
+interface RactiveSanitizeOptions {
+	elements: string[];
+	// TODO: Undocumented what default value is, but probably false
+	eventAttributes?: boolean;
+}
+
 interface RactiveNewOptions {
-	// Required options
-
-	// TODO: How to split up to String or (if preparsing) Array or Object type?
-	template: any;
-
-	// Optional options
-
-	// TODO: Object or Array
-	data?: any;
-	// TODO: HTMLElement or String or jQuery-like collection
-	el?: any;
-	partials?: Object;
-	// TODO: Boolean or Object
-	sanitize?: any;
-	transitions?: Object;
-	complete?: () => void; // TODO: void?
 	// TODO: adaptors or adapt? Confused in documentation
-	//adaptors?: any[];
+	//adapt?: any[];
 
+	complete?: Function;
+	components?: { [key: string]: RactiveComponentPlugin; };
+	computed?: Object;
+	/**
+	 * TODO: Question - When is data Array?
+	 *
+	 * @type Object or Array
+	 */
+	data?: any;
+
+	// TODO: undocumented in Initialisation options page
+	decorators?: { [key: string]: RactiveDecoratorPlugin; };
+	
+	/**
+	 * @type [open, close]
+	 */
+	delimiters?: string[];
+	/**
+	 * @type HTMLElement or String or jQuery-like collection
+	 */
+	el?: any;
+	// TODO: undocumented in Initialisation options page
+	events?: { [key: string]: RactiveEventPlugin; };
+	/**
+	 * any is same type as template
+	 */
+	partials?: { [key: string]: any; };
+	/**
+	 * Default false
+	 * @type Boolean or RactiveSanitizeOptions
+	 */
+	sanitize?: any;
+	/**
+	 * @type String or (if preparsing "Ractive.parse") Array or Object
+	 */
+	template?: any;
+	transitions?: { [key: string]: RactiveTransitionPlugin; };
+	/**
+	 * @type [open, close]
+	 */
+	tripleDelimiters?: string[];
+
+	// TODO: In dev documentation append have anchor??
+	// Default false
 	append?: boolean;
-	computed?: boolean;
+	// Default false
 	debug?: boolean;
+	// Default false
 	lazy?: boolean;
+	// Default false
 	magic?: boolean;
+	// Default true
 	modifyArrays?: boolean;
+	// Default false
+	noIntro: boolean;
+	// Default false
 	preserveWhitespace?: boolean;
+	// Default true
 	twoway?: boolean;
 
-	// TODO: undocumented
-	decorators?: Object;
 }
 
 interface RactiveExtendOptions extends RactiveNewOptions {
@@ -101,28 +182,28 @@ interface RactiveStatic {
 
 	extend(RactiveExtendOptions): RactiveStatic;
 
-	parse(template: string, options?: { preserveWhitespace: boolean, sanitize: any });
+	parse(template: string, options?: { preserveWhitespace: boolean, sanitize: any }): any;
 
 	// TODO: undocumented
-	adaptors: Object;
+	adaptors: { [key: string]: any; };
 
 	// TODO: undocumented
 	defaults: RactiveDefaultsOptions;
 
 	// TODO: undocumented
-	decorators: Object;
+	decorators: { [key: string]: RactiveDecoratorPlugin; };
 
 	// TODO: undocumented
-	events: Object;
+	events: { [key: string]: RactiveEventPlugin; };
 
 	// TODO: missing static properties documentation
-	partials: Object;
+	partials: { [key: string]: any; };
 
 	// Undocumented method
 	Promise: RactivePromise;
 
 	// TODO: missing static properties documentation
-	transitions: Object;
+	transitions: { [key: string]: RactiveTransitionPlugin; };
 }
 
 /**

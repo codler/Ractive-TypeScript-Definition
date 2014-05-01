@@ -1,4 +1,12 @@
 ﻿/// <reference path="ractive.d.ts" />
+function test_transition() {
+    var plugin = function (t, params) {
+        // Some stuffs...
+    };
+
+    Ractive.transitions['myTransition'] = plugin;
+}
+
 Ractive.defaults = {
     template: '',
     debug: true
