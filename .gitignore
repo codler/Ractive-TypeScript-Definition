@@ -1,0 +1,4 @@
+RactiveTypeScriptDefinition/bin
+RactiveTypeScriptDefinition/obj
+*.user
+*.suo
