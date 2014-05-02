@@ -2,7 +2,7 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.4.0-2+2014-05-01
+// Version: 0.4.0-3+2014-05-02
 
 // It's functionally identical to the ES6 promise (as currently spec'd) except that Promise.race and Promise.cast are not currently implemented.
 interface RactivePromise extends Object {
@@ -153,7 +153,7 @@ interface RactiveNewOptions {
 	// Default true
 	modifyArrays?: boolean;
 	// Default false
-	noIntro: boolean;
+	noIntro?: boolean;
 	// Default false
 	preserveWhitespace?: boolean;
 	// Default true
@@ -271,8 +271,14 @@ interface Ractive {
 
 	update(keypath?: string): RactivePromise;
 
-	// Default cascade false
-	updateModel(keypath?: string, cascade?: boolean): void; // TODO: void?
+	/**
+	 * Update out of sync two-way bindings
+	 * @param keypath A string
+	 * @param cascade A boolean with default false
+	 */
+	updateModel(keypath?: string, cascade?: boolean): void;
+	// TODO: In next release
+	// updateModel(keypath?: string, cascade?: boolean): RactivePromise;
 
 	// Properties
 
