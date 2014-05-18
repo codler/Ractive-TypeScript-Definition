@@ -2,11 +2,15 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.4.0-3+2014-05-02
+// Version: 0.4.0-4+2014-05-18
 
 // It's functionally identical to the ES6 promise (as currently spec'd) except that Promise.race and Promise.cast are not currently implemented.
 interface RactivePromise extends Object {
 	// TODO: Implement interface or wait until typescript include native Promise definition.
+}
+
+interface RactiveAnimationPromise extends RactivePromise {
+	stop(): void; // TODO: void?
 }
 
 interface RactiveComponentPlugin extends RactiveStatic {
@@ -22,7 +26,7 @@ interface RactiveEventPlugin extends Function {
 }
 
 interface RactiveTransitionPlugin {
-	(t: RactiveTransition, params: Object);
+	(t: RactiveTransition, params: Object): void;
 }
 
 interface RactiveEvent {
@@ -88,6 +92,12 @@ interface RactiveObserveOptions {
 	init?: boolean;
 }
 
+// Used in Ractive.parse options
+interface RactiveParseOptions {
+	preserveWhitespace: boolean;
+	sanitize: any;
+}
+
 // Used in Initialisation options
 interface RactiveSanitizeOptions {
 	elements: string[];
@@ -111,7 +121,7 @@ interface RactiveNewOptions {
 
 	// TODO: undocumented in Initialisation options page
 	decorators?: { [key: string]: RactiveDecoratorPlugin; };
-	
+
 	/**
 	 * @type [open, close]
 	 */
@@ -180,9 +190,9 @@ interface RactiveDefaultsOptions extends RactiveExtendOptions {
 interface RactiveStatic {
 	new (options: RactiveNewOptions): Ractive;
 
-	extend(RactiveExtendOptions): RactiveStatic;
+	extend(options: RactiveExtendOptions): RactiveStatic;
 
-	parse(template: string, options?: { preserveWhitespace: boolean, sanitize: any }): any;
+	parse(template: string, options?: RactiveParseOptions): any;
 
 	// TODO: undocumented
 	adaptors: { [key: string]: any; };
@@ -212,9 +222,9 @@ interface RactiveStatic {
 interface Ractive {
 	add(keypath: string, number?: number): RactivePromise;
 
-	animate(keypath: string, value: any, options?: RactiveAnimateOptions);
+	animate(keypath: string, value: any, options?: RactiveAnimateOptions): RactiveAnimationPromise;
 
-	animate(map: Object, options?: RactiveAnimateOptions);
+	animate(map: Object, options?: RactiveAnimateOptions): RactiveAnimationPromise;
 
 	detach(): DocumentFragment;
 
@@ -240,7 +250,7 @@ interface Ractive {
 	insert(target: any, anchor?: any): void; // TODO: void?
 
 	// TODO: compare - Boolean or String or Function
-	merge(keypath: string, value: any[], options?: { compare: any });
+	merge(keypath: string, value: any[], options?: { compare: any }): RactivePromise;
 
 	// callback context Ractive
 	observe(keypath: string, callback: (newValue: any, oldValue: any, keypath: string) => void, options?: RactiveObserveOptions): RactiveObserve;
@@ -249,9 +259,10 @@ interface Ractive {
 	// TODO: check handler type
 	off(eventName?: string, handler?: () => void): void; // TODO: void?
 
-	// TODO: check handler type
 	// handler context Ractive
 	on(eventName: string, handler: (event?: RactiveEvent, ...args: any[]) => void): RactiveObserve;
+	// TODO: undocumented
+	on(map: { [eventName: string]: (event?: RactiveEvent, ...args: any[]) => void }): RactiveObserve;
 
 	// TODO: ???
 	//render();
