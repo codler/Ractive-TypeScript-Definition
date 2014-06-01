@@ -2,7 +2,7 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.4.0-4+2014-05-18
+// Version: 0.4.0-5+2014-06-01
 
 // It's functionally identical to the ES6 promise (as currently spec'd) except that Promise.race and Promise.cast are not currently implemented.
 interface RactivePromise extends Object {
@@ -17,8 +17,12 @@ interface RactiveComponentPlugin extends RactiveStatic {
 	// TODO: 
 }
 
-interface RactiveDecoratorPlugin extends Function {
-	// TODO: 
+interface RactiveDecoratorPlugin {
+	(node: Node, ...args: any[]): {
+		// TODO: undocumented GH-429
+		update?: (...args: any[]) => {};
+		teardown: () => void;
+	}
 }
 
 interface RactiveEventPlugin extends Function {
@@ -27,6 +31,22 @@ interface RactiveEventPlugin extends Function {
 
 interface RactiveTransitionPlugin {
 	(t: RactiveTransition, params: Object): void;
+}
+
+interface RactiveComponentPlugins {
+	[key: string]: RactiveComponentPlugin;
+}
+
+interface RactiveDecoratorPlugins {
+	[key: string]: RactiveDecoratorPlugin;
+}
+
+interface RactiveEventPlugins {
+	[key: string]: RactiveEventPlugin;
+}
+
+interface RactiveTransitionPlugins {
+	[key: string]: RactiveTransitionPlugin;
 }
 
 interface RactiveEvent {
@@ -110,7 +130,7 @@ interface RactiveNewOptions {
 	//adapt?: any[];
 
 	complete?: Function;
-	components?: { [key: string]: RactiveComponentPlugin; };
+	components?: RactiveComponentPlugins;
 	computed?: Object;
 	/**
 	 * TODO: Question - When is data Array?
@@ -120,7 +140,7 @@ interface RactiveNewOptions {
 	data?: any;
 
 	// TODO: undocumented in Initialisation options page
-	decorators?: { [key: string]: RactiveDecoratorPlugin; };
+	decorators?: RactiveDecoratorPlugins;
 
 	/**
 	 * @type [open, close]
@@ -131,7 +151,7 @@ interface RactiveNewOptions {
 	 */
 	el?: any;
 	// TODO: undocumented in Initialisation options page
-	events?: { [key: string]: RactiveEventPlugin; };
+	events?: RactiveEventPlugins;
 	/**
 	 * any is same type as template
 	 */
@@ -145,7 +165,7 @@ interface RactiveNewOptions {
 	 * @type String or (if preparsing "Ractive.parse") Array or Object
 	 */
 	template?: any;
-	transitions?: { [key: string]: RactiveTransitionPlugin; };
+	transitions?: RactiveTransitionPlugins;
 	/**
 	 * @type [open, close]
 	 */
@@ -173,9 +193,9 @@ interface RactiveNewOptions {
 
 interface RactiveExtendOptions extends RactiveNewOptions {
 	// TODO: undocumented arguments
-	beforeInit?: () => void; // TODO: void?
+	beforeInit?: (options: RactiveExtendOptions) => void; // TODO: void?
 	// TODO: undocumented arguments
-	init?: () => void; // TODO: void?
+	init?: (options: RactiveExtendOptions) => void; // TODO: void?
 	// Default false, inherit from Ractive.defaults
 	isolated?: boolean;
 }
@@ -198,13 +218,16 @@ interface RactiveStatic {
 	adaptors: { [key: string]: any; };
 
 	// TODO: undocumented
+	components: RactiveComponentPlugins;
+
+	// TODO: undocumented
 	defaults: RactiveDefaultsOptions;
 
 	// TODO: undocumented
-	decorators: { [key: string]: RactiveDecoratorPlugin; };
+	decorators: RactiveDecoratorPlugins;
 
 	// TODO: undocumented
-	events: { [key: string]: RactiveEventPlugin; };
+	events: RactiveEventPlugins;
 
 	// TODO: missing static properties documentation
 	partials: { [key: string]: any; };
@@ -213,7 +236,7 @@ interface RactiveStatic {
 	Promise: RactivePromise;
 
 	// TODO: missing static properties documentation
-	transitions: { [key: string]: RactiveTransitionPlugin; };
+	transitions: RactiveTransitionPlugins;
 }
 
 /**
