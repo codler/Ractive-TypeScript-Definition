@@ -2,7 +2,7 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.4.0-5+2014-06-01
+// Version: 0.4.0-6+2014-06-08
 
 // It's functionally identical to the ES6 promise (as currently spec'd) except that Promise.race and Promise.cast are not currently implemented.
 interface RactivePromise extends Object {
@@ -18,7 +18,7 @@ interface RactiveComponentPlugin extends RactiveStatic {
 }
 
 interface RactiveDecoratorPlugin {
-	(node: Node, ...args: any[]): {
+	(node: HTMLElement, ...args: any[]): {
 		// TODO: undocumented GH-429
 		update?: (...args: any[]) => {};
 		teardown: () => void;
@@ -54,7 +54,7 @@ interface RactiveEvent {
 	// TODO: unclear in documantation
 	index: Object;
 	keypath: string;
-	node: Node;
+	node: HTMLElement;
 	original: Event;
 }
 
@@ -67,7 +67,7 @@ interface RactiveObserve {
 interface RactiveTransition {
 	isIntro: boolean;
 	name: string;
-	node: Node;
+	node: HTMLElement;
 
 	animateStyle(prop: string, value: any, options: RactiveTransitionAnimateOptions, complete: Function): void;
 	animateStyle(props: Object, options: RactiveTransitionAnimateOptions, complete: Function): void;
@@ -251,10 +251,10 @@ interface Ractive {
 
 	detach(): DocumentFragment;
 
-	find(selector: string): Node;
+	find(selector: string): HTMLElement;
 
 	// live default false
-	findAll(selector: string, options?: { live: boolean }): Node[];
+	findAll(selector: string, options?: { live: boolean }): HTMLElement[];
 
 	// live default false
 	findAllComponents(name: string, options?: { live: boolean }): Ractive[];
