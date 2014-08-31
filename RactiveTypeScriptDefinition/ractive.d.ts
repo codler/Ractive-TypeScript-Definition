@@ -2,7 +2,7 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.4.0-6+2014-06-08
+// Version: 0.4.0-7+2014-07-25
 
 // It's functionally identical to the ES6 promise (as currently spec'd) except that Promise.race and Promise.cast are not currently implemented.
 interface RactivePromise extends Object {
@@ -20,7 +20,7 @@ interface RactiveComponentPlugin extends RactiveStatic {
 interface RactiveDecoratorPlugin {
 	(node: HTMLElement, ...args: any[]): {
 		// TODO: undocumented GH-429
-		update?: (...args: any[]) => {};
+		update?: (...args: any[]) => void;
 		teardown: () => void;
 	}
 }
