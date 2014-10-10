@@ -2,7 +2,11 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.5.5-1+2014-08-31
+// Version: 0.5.5-3+2014-09-08
+
+interface RactiveNode extends HTMLElement {
+	_ractive: any;
+}
 
 // It's functionally identical to the ES6 promise (as currently spec'd) except that Promise.race and Promise.cast are not currently implemented.
 interface RactivePromise extends Object {
@@ -113,8 +117,6 @@ interface RactiveObserveOptions {
 	// Default Ractive
 	context?: any;
 	// Default false
-	debug?: boolean;
-	// Default false
 	defer?: boolean;
 	// Default true
 	init?: boolean;
@@ -138,7 +140,7 @@ interface RactiveNewOptions {
 	 * @type List of mixed string or Adaptor
 	 */
 	adapt?: any[];
-	
+
 	adaptors?: RactiveAdaptorPlugins;
 
 	/**
@@ -146,14 +148,14 @@ interface RactiveNewOptions {
 	 * @type boolean or any type that option `el` accepts (HTMLElement or String or jQuery-like collection)
 	 */
 	append?: any;
-	
+
 	complete?: Function;
 	components?: RactiveComponentPlugins;
 	computed?: Object;
 	// Since 0.5.5
 	// TODO: unclear in documantation
 	css?: string;
-	
+
 	/**
 	 * TODO: Question - When is data Array or String?
 	 *
@@ -167,21 +169,25 @@ interface RactiveNewOptions {
 	 * @type [open, close]
 	 */
 	delimiters?: string[];
-	
+
 	// TODO: String or Function
 	easing?: any;
-	
+
 	/**
 	 * @type HTMLElement or String or jQuery-like collection
 	 */
 	el?: any;
 	// TODO: undocumented in Initialisation options page
 	events?: RactiveEventPlugins;
-	
+
+	// TODO: In next release
+	// TODO: undocumented GH-429
+	// interpolate
+
 	// Since 0.5.5
 	// TODO: unclear in documantation
 	interpolators?: { [key: string]: any; };
-	
+
 	/**
 	 * any is same type as template
 	 */
@@ -269,7 +275,7 @@ interface RactiveStatic {
 
 	// TODO: undocumented
 	decorators: RactiveDecoratorPlugins;
-	
+
 	easing: { [key: string]: (x: number) => number; };
 
 	// TODO: undocumented
@@ -335,25 +341,25 @@ interface Ractive {
 
 	// Since 0.5.5
 	pop(keypath: string): RactivePromise;
-	
+
 	// Since 0.5.5
 	push(keypath: string, value: any): RactivePromise;
-	
+
 	// TODO: target - Node or String or jQuery (see Valid selectors)
 	render(target: any): void; // TODO: void?
 
 	reset(data?: Object): RactivePromise;
-	
+
 	// Since 0.5.5
 	// TODO: undocumented, mentioned in ractive change log
 	resetTemplate(): void; // TODO: void?
 
 	set(keypath: string, value: any): RactivePromise;
 	set(map: Object): RactivePromise;
-	
+
 	// Since 0.5.5
 	shift(keypath: string): RactivePromise;
-	
+
 	// Since 0.5.5
 	splice(keypath: string, index: number, removeCount: number, ...add: any[]): RactivePromise;
 
@@ -367,7 +373,7 @@ interface Ractive {
 
 	// Since 0.5.5
 	unshift(keypath: string, value: any): RactivePromise;
-	
+
 	update(keypath?: string): RactivePromise;
 
 	/**
