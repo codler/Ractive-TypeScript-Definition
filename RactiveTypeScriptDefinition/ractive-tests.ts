@@ -1,7 +1,7 @@
 ﻿/// <reference path="ractive.d.ts" />
 
 function test_transition() {
-	var plugin: RactiveTransitionPlugin = (t: RactiveTransition, params: Object) => {
+	var plugin: Ractive.TransitionPlugin = (t: Ractive.Transition, params: Object) => {
 		// Some stuffs...
 	};
 
@@ -13,14 +13,14 @@ Ractive.defaults = {
 	debug: true
 }
 
-var options: RactiveNewOptions = {
+var options: Ractive.NewOptions = {
 	template: '',
 };
 
-var r: Ractive = new Ractive(options);
+var r: Ractive.Ractive = new Ractive(options);
 
 r.add('keypath', 1);
 
-var re: RactiveStatic = Ractive.extend(options);
-var component: RactiveStatic = re.extend(options);
+var re: Ractive.Static = Ractive.extend(options);
+var component: Ractive.Static = re.extend(options);
 new component(options);
