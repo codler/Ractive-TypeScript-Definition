@@ -2,7 +2,7 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.7.0-1+2015-02-05
+// Version: 0.7.0-2+2015-02-05
 
 declare module Ractive {
     export interface Node extends HTMLElement {
@@ -346,9 +346,9 @@ declare module Ractive {
         off(eventName?: string, handler?: () => void): Ractive;
 
         // handler context Ractive
-        on(eventName: string, handler: (event?: Event, ...args: any[]) => void): Observe;
+        on(eventName: string, handler: (event?: Ractive.Event | any, ...args: any[]) => void): Observe;
         // TODO: undocumented
-        on(map: { [eventName: string]: (event?: Event, ...args: any[]) => void }): Observe;
+        on(map: { [eventName: string]: (event?: Ractive.Event | any, ...args: any[]) => void }): Observe;
 
         // Since 0.5.5
         pop(keypath: string): Promise;
@@ -402,6 +402,7 @@ declare module Ractive {
     }
 }
 
+// used for require()
 declare module "ractive" {
     export = Ractive;
 }
