@@ -2,7 +2,9 @@
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.7.0-2+2015-02-05
+// Version: 0.7.0-3+2015-02-07
+
+declare type RactiveEvent = Event;
 
 declare module Ractive {
     export interface Node extends HTMLElement {
@@ -68,7 +70,7 @@ declare module Ractive {
         index: Object;
         keypath: string;
         node: HTMLElement;
-        original: Event;
+        original: RactiveEvent;
     }
 
     // Return value in ractive.observe and ractive.on
@@ -188,9 +190,13 @@ declare module Ractive {
         interpolators?: { [key: string]: any; };
 
         // Since 0.6.0
+        onchange?: (options: NewOptions) => void; // TODO: void?
+        // Since 0.6.0
+        oncomplete?: () => void; // TODO: void?
+        // Since 0.6.0
         onconstruct?: (options: NewOptions) => void; // TODO: void?
         // Since 0.6.0
-        onchange?: (options: NewOptions) => void; // TODO: void?
+        onrender?: () => void; // TODO: void?
 
 	    /**
 	     * any is same type as template
