@@ -1,10 +1,10 @@
-﻿// Type definitions for Ractive 0.7.0 edge f22ab8ad0a640591b1c263f57e21d1565cb26bf5
+﻿// Type definitions for Ractive 0.7.0 edge 0e5e989a291ee483310d5e038265a4ff430abd89
 // Project: http://ractivejs.org
 // Definitions by: Han Lin Yap <http://yap.nu>
 // Definitions: https://github.com/codler/Ractive-TypeScript-Definition
-// Version: 0.7.0-3+2015-02-07
+// Version: 0.7.0-4+2015-02-12
 
-declare type RactiveEvent = Event;
+declare type _RactiveEvent = Event;
 
 declare module Ractive {
     export interface Node extends HTMLElement {
@@ -66,11 +66,13 @@ declare module Ractive {
 
     export interface Event {
         context: any;
-        // TODO: unclear in documantation
-        index: Object;
+        component?: Ractive;
+        index: { [key: string]: number };
         keypath: string;
+        // Since 0.6.0
+        name: string;
         node: HTMLElement;
-        original: RactiveEvent;
+        original: _RactiveEvent;
     }
 
     // Return value in ractive.observe and ractive.on
@@ -387,6 +389,9 @@ declare module Ractive {
         toggle(keypath: string): Promise;
 
         toHTML(): string;
+
+        // Since 0.6.0
+        unrender(): void; // TODO: void?
 
         // Since 0.5.5
         unshift(keypath: string, value: any): Promise;
