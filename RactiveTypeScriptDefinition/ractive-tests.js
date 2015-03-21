@@ -5,12 +5,16 @@ function test_transition() {
     };
     Ractive.transitions['myTransition'] = plugin;
 }
+var adaptor;
 Ractive.defaults = {
     template: '',
-    debug: true
 };
 var options = {
+    adapt: ['myAdaptor', adaptor],
     template: '',
+    data: {
+        someThing: 'value',
+    }
 };
 var r = new Ractive(options);
 r.add('keypath', 1);
